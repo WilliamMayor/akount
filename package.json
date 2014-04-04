@@ -1,0 +1,10 @@
+{
+    "name": "akount",
+    "main": "./html/index.html",
+    "window": {
+        "title": "akount",
+        "icon": "./images/icon.png",
+        "toolbar": false,
+        "frame": true
+      }
+}
