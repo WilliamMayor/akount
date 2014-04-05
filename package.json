@@ -4,7 +4,8 @@
     "window": {
         "title": "akount",
         "icon": "./images/icon.png",
-        "toolbar": false,
-        "frame": true
+        "toolbar": true,
+        "frame": true,
+        "width": 1000
       }
 }

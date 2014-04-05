@@ -1,18 +1,21 @@
 body {
 	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
 	font-weight: 300;
-	background-color: #ecf0f1;
+	background-color: $background;
 	color: $text;
+	height: 100%;
 
 	header {
-		height: 100%;
+		position: absolute;
+		top: 20px;
+		bottom: 20px;
+		left: 0px;
 		width: 200px;
-		margin: 20px;
+		padding: 20px;
 		border-right: 1px solid $border;
 
-		select {
-			width: 180px;
-			margin: auto;
+		h1 {
+			margin: 0;
 		}
 
 		ul {
@@ -33,11 +36,9 @@ body {
 				}
 			}
 
-			&.admin {
-				height: 100%;
-			}
-
 			&.global {
+				position: absolute;
+				bottom: 0px;
 				border-top: 1px solid $border;
 				text-align: center;
 				padding-top: 20px;
@@ -48,6 +49,26 @@ body {
 					display: inline;
 					margin: 0 10px;
 				}
+			}
+		}
+	}
+
+	main {
+		position: absolute;
+		left: 200px;
+		top: 0px;
+		padding: 20px;
+
+		input {
+			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+			font-weight: 300;
+			padding: 5px;
+			font-size: 16px;
+			border: 1px solid $border;
+
+			&:focus {
+				outline: none;
+				border-color: $highlight;
 			}
 		}
 	}

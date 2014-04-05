@@ -7,15 +7,18 @@ body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
   background-color: #ecf0f1;
-  color: #34495e; }
+  color: #34495e;
+  height: 100%; }
   body header {
-    height: 100%;
+    position: absolute;
+    top: 20px;
+    bottom: 20px;
+    left: 0px;
     width: 200px;
-    margin: 20px;
+    padding: 20px;
     border-right: 1px solid #7f8c8d; }
-    body header select {
-      width: 180px;
-      margin: auto; }
+    body header h1 {
+      margin: 0; }
     body header ul {
       list-style-type: none;
       margin: 20px 0;
@@ -27,9 +30,9 @@ body {
           color: #34495e; }
           body header ul li a:hover {
             text-decoration: underline; }
-      body header ul.admin {
-        height: 100%; }
       body header ul.global {
+        position: absolute;
+        bottom: 0px;
         border-top: 1px solid #7f8c8d;
         text-align: center;
         padding-top: 20px;
@@ -38,3 +41,61 @@ body {
         body header ul.global li {
           display: inline;
           margin: 0 10px; }
+  body main {
+    position: absolute;
+    left: 200px;
+    top: 0px;
+    padding: 20px; }
+    body main input {
+      font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
+      font-weight: 300;
+      padding: 5px;
+      font-size: 16px;
+      border: 1px solid #7f8c8d; }
+      body main input:focus {
+        outline: none;
+        border-color: #2980b9; }
+
+.expenditures .date {
+  width: 100px;
+  text-align: left; }
+.expenditures .description {
+  width: 300px;
+  text-align: left; }
+.expenditures .cost {
+  width: 100px;
+  text-align: left; }
+.expenditures .tags {
+  width: 150px;
+  text-align: left; }
+.expenditures .save {
+  background-color: #2ecc71;
+  border-color: #27ae60;
+  cursor: pointer; }
+.expenditures table {
+  width: 100%;
+  border-collapse: collapse;
+  background-color: white;
+  border: 1px solid #7f8c8d;
+  margin-top: 20px; }
+  .expenditures table thead tr th {
+    border-bottom: 2px solid #7f8c8d; }
+    .expenditures table thead tr th a {
+      color: #34495e; }
+  .expenditures table td, .expenditures table th {
+    padding: 5px; }
+  .expenditures table tbody tr .edit {
+    text-align: right; }
+    .expenditures table tbody tr .edit a {
+      display: none;
+      text-decoration: none;
+      color: #34495e;
+      margin-left: 10px; }
+      .expenditures table tbody tr .edit a.delete:hover {
+        color: #c0392b; }
+      .expenditures table tbody tr .edit a.edit:hover {
+        color: #8e44ad; }
+  .expenditures table tbody tr:hover {
+    background-color: #bdc3c7; }
+    .expenditures table tbody tr:hover .edit a {
+      display: inline; }

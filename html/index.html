@@ -8,28 +8,101 @@
 <body>
  	<header>
 	 	<h1>akount</h1>
-	 	<select>
-		 	<option>William Mayor</option>
-		 	<option>New...</option>
-	 	</select>
+	 	<h2>William Mayor</h2>
 	 	<ul class="main">
-		 	<li><a href="summary.html">Summary</a></li>
-		 	<li><a href="invoices.html">Invoices</a></li>
-		 	<li><a href="expenditures.html">Expenditures</a></li>
+		 	<li><a href="summary">Summary</a></li>
+		 	<li><a href="invoices">Invoices</a></li>
+		 	<li><a href="expenditures">Expenditures</a></li>
 	 	</ul>
 	 	<ul class="admin">
-	 		<li><a href="backup.html">Backup</a></li>
-	 		<li><a href="settings.html">Settings</a></li>
+	 		<li><a href="backup">Backup</a></li>
+	 		<li><a href="settings">Settings</a></li>
 	 	</ul>
 	 	<ul class="global">
-		 	<li><a href="settings.html"><i class="fa fa-lg fa-cog"></i></a></li>
-		 	<li><a href="help.html"><i class="fa fa-lg fa-question"></i></a></li>
-		 	<li><a href="http://akount.williammayor.co.uk"><i class="fa fa-lg fa-external-link"></i></a></li>
+		 	<li><a href="globalsettings"><i class="fa fa-lg fa-cog"></i></a></li>
+		 	<li><i class="fa fa-lg fa-question"></i></li>
+		 	<li><a href="http://akount.williammayor.co.uk" target="_blank"><i class="fa fa-lg fa-external-link"></i></a></li>
 	 	</ul>
  	</header>
  	<main>
 
+ 		<div class="summary" data-bind="visible: visible">
+	 		<h2>Summary</h2>
+ 		</div>
+
+ 		<div class="invoices" data-bind="visible: visible">
+	 		<h2>Invoices</h2>
+ 		</div>
+
+ 		<div class="expenditures" data-bind="visible: visible">
+ 			<h2>Expenditures</h2>
+ 			<form data-bind="submit: save">
+	 			<input data-bind="value: dirty_id" class="id" type="hidden" />
+	 			<input data-bind="value: dirty_date" placeholder="Date" class="date" type="text" />
+	 			<input data-bind="value: dirty_description" placeholder="Description" class="description" type="text" />
+	 			<input data-bind="value: dirty_cost" placeholder="Cost" class="cost" type="text" />
+	 			<input data-bind="value: dirty_tags" placeholder="Tags" class="tags" type="text" />
+	 			<input type="submit" value="Save" class="save" />
+ 			</form>
+ 			<table>
+	 			<thead>
+	 				<tr>
+	 					<th class="date">
+	 						<a href="sort" data-bind="click: function() {sort('date'); }">Date</a>
+	 					</th>
+	 					<th class="description">
+	 						<a href="sort" data-bind="click: function() {sort('description'); }">Description</a>
+	 					</th>
+	 					<th class="cost">
+	 						<a href="sort" data-bind="click: function() {sort('cost'); }">Cost</a>
+	 					</th>
+	 					<th class="tags">Tags</th>
+	 					<th class="edit"></th>
+	 				</tr>
+	 			</thead>
+	 			<tbody data-bind="foreach: items">
+		 			<tr data-bind="attr: {id: 'e' + id">
+		 				<td><a href="filter" data-bind="text: date, click: function() { $parent.filter('date', date()); }"></a></td>
+		 				<td data-bind="text: description"></td>
+		 				<td data-bind="html: '&pound;' + cost()"></td>
+		 				<td data-bind="foreach: split_tags">
+		 					<a href="filter" data-bind="text: $data, click: function() { $root.filter('tags', $data); }"></a>
+		 				</td>
+		 				<td class="edit">
+		 					<a href="delete" class="delete" data-bind="click: $parent.delete"><i class="fa fa-lg fa-times"></i></a>
+		 					<a href="edit" class="edit" data-bind="click: $parent.load"><i class="fa fa-lg fa-pencil"></i></a>
+		 				</td>
+		 			</tr>
+	 			</tbody>
+ 			</table>
+ 		</div>
+
+ 		<div class="backup" data-bind="visible: visible">
+	 		<h2>Backup</h2>
+ 		</div>
+
+ 		<div class="settings" data-bind="visible: visible">
+	 		<h2>Settings</h2>
+ 		</div>
+
+ 		<div class="globalsettings" data-bind="visible: visible">
+	 		<h2>Global Settings</h2>
+ 		</div>
+
  	</main>
+ 	<script src="../js/jquery-2.1.0.min.js"></script>
+ 	<script src="../js/underscore-min.js"></script>
+ 	<script src="../js/underscore.db.min.js"></script>
+ 	<script src="../js/knockout-3.1.0.js"></script>
+ 	
  	<script src="../js/main.js"></script>
+ 	<script src="../js/summary.js"></script>
+ 	<script src="../js/invoices.js"></script>
+ 	<script src="../js/expenditures.js"></script>
+ 	<script src="../js/backup.js"></script>
+ 	<script src="../js/settings.js"></script>
+ 	<script src="../js/globalsettings.js"></script>
+
+ 	<script src="../js/develop.js"></script>
 </body>
 </html>
