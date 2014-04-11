@@ -1,12 +1,13 @@
 var global;
 
-function ExpenditureItemViewModel(id, date, description, cost, tags) {
+function ExpenditureItemViewModel(id, date, description, cost, repeat, tags) {
 	var self = this;
 
 	self.id = ko.observable(id);
 	self.date = ko.observable(date);
 	self.description = ko.observable(description);
 	self.cost = ko.observable(cost);
+	self.repeat = ko.observable(repeat);
 	self.tags = ko.observable(tags);
 
 	self.split_tags = ko.computed(function() {
@@ -28,6 +29,7 @@ function ExpenditureItemViewModel(id, date, description, cost, tags) {
 			date: self.date(),
 			description: self.description(),
 			cost: self.cost(),
+			repeat: self.repeat(),
 			tags: self.tags()
 		}
 		var id = self.id();
@@ -46,19 +48,44 @@ function ExpendituresViewModel() {
 	self.dirty_date = ko.observable();
 	self.dirty_description = ko.observable();
 	self.dirty_cost = ko.observable();
+	self.dirty_repeat = ko.observable();
 	self.dirty_tags = ko.observable();
 
-	self.items = ko.observableArray(
-		_.map(global.db.expenditure, function(o) {
+	self.all = function() {
+		var items = _.map(global.db.expenditure, function(o) {
 			return new ExpenditureItemViewModel(
 				o.id,
 				o.date,
 				o.description,
 				o.cost,
+				o.repeat,
 				o.tags
 			);
-		})
-	);
+		});
+		var generated = [];
+		_.each(items, function(item) {
+			if (item.repeat()) {
+				var sched = later.schedule(later.parse.cron(item.repeat()));
+				var start = Date.parse(item.date()).addDays(1);
+				var end = Date.today();
+				var dates = sched.next(Number.MAX_VALUE, start, end);
+				_.each(dates, function(date) {
+					console.log(date);
+					generated.push(new ExpenditureItemViewModel(
+						-1,
+						date.toString("yyyy-MM-dd"),
+						"Scheduled: " + item.description(),
+						item.cost(),
+						null,
+						item.tags()
+					));
+				});
+			}
+		});
+		return _.union(items, generated);
+	}
+
+	self.items = ko.observableArray(self.all());
 
 	self.show = function() {
 		self.visible(true);
@@ -69,27 +96,30 @@ function ExpendituresViewModel() {
 	self.save = function() {
 		var id = self.dirty_id();
 		if (!id) {
-			var item = new ExpenditureItemViewModel(null, self.dirty_date(), self.dirty_description(), self.dirty_cost(), self.dirty_tags());
+			var item = new ExpenditureItemViewModel(null, self.dirty_date(), self.dirty_description(), self.dirty_cost(), self.dirty_repeat(), self.dirty_tags());
 			item.save();
 			self.items.push(item);
-		} else {
+		} else if (id !== -1) {
 			var item = _.find(self.items(), function(item) {
 				return item.id() === id;
 			});
 			item.date(self.dirty_date());
 			item.description(self.dirty_description());
 			item.cost(self.dirty_cost());
+			item.repeat(self.dirty_repeat());
 			item.tags(self.dirty_tags());
 			item.save();
 		}
 		_.save(global.db, global.db_path);
-		
+
+		self.items(self.all());
 		self.sort();
 		
 		self.dirty_id("");
 		self.dirty_date("");
 		self.dirty_description("");
 		self.dirty_cost("");
+		self.dirty_repeat("");
 		self.dirty_tags("");
 	}
 	self.load = function(item) {
@@ -97,6 +127,7 @@ function ExpendituresViewModel() {
 		self.dirty_date(item.date());
 		self.dirty_description(item.description());
 		self.dirty_cost(item.cost());
+		self.dirty_repeat(item.repeat());
 		self.dirty_tags(item.tags());
 	}
 	self.delete = function(item) {
@@ -144,16 +175,7 @@ function ExpendituresViewModel() {
 		} else {
 			self.filter.current.push([accessor, value]);
 		}
-		var items = _.map(global.db.expenditure, function(o) {
-			return new ExpenditureItemViewModel(
-				o.id,
-				o.date,
-				o.description,
-				o.cost,
-				o.tags
-			);
-		});
-		items = _.filter(items, function(item) {
+		var items = _.filter(self.all(), function(item) {
 			return _.every(self.filter.current(), function(f) {
 				if (f[0] === "tags") {
 					return _.contains(item.split_tags(), f[1]);

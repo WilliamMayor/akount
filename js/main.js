@@ -14,6 +14,8 @@ if (global.db === null) {
 	}
 }
 
+later.date.localTime();
+
 $("header a").click(function(e) {
 	var a = $(this);
 	var href = a.attr("href");
