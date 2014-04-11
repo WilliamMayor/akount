@@ -45,6 +45,7 @@ body {
     position: absolute;
     left: 200px;
     top: 0px;
+    bottom: 0px;
     padding: 20px; }
     body main input {
       font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
@@ -98,4 +99,13 @@ body {
   .expenditures table tbody tr:hover {
     background-color: #bdc3c7; }
     .expenditures table tbody tr:hover .edit a {
+      display: inline; }
+.expenditures .filters {
+  margin: 20px 0; }
+  .expenditures .filters ul {
+    list-style-type: none;
+    margin: 0;
+    padding: 0;
+    display: inline; }
+    .expenditures .filters ul li {
       display: inline; }

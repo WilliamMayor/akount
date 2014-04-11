@@ -2,7 +2,7 @@
 <html>
 <head>
     <title>akount</title>
-    <link rel="stylesheet" href="../fonts/fa/font-awesome.min.css">
+    <link rel="stylesheet" href="../fonts/fa/font-awesome.min.css" type="text/css">
     <link rel="stylesheet" href="../css/main.css" type="text/css" />
 </head>
 <body>
@@ -40,7 +40,7 @@
 	 			<input data-bind="value: dirty_id" class="id" type="hidden" />
 	 			<input data-bind="value: dirty_date" placeholder="Date" class="date" type="text" />
 	 			<input data-bind="value: dirty_description" placeholder="Description" class="description" type="text" />
-	 			<input data-bind="value: dirty_cost" placeholder="Cost" class="cost" type="text" />
+	 			<input data-bind="value: dirty_cost" placeholder="Cost" class="cost" type="number" />
 	 			<input data-bind="value: dirty_tags" placeholder="Tags" class="tags" type="text" />
 	 			<input type="submit" value="Save" class="save" />
  			</form>
@@ -49,12 +49,15 @@
 	 				<tr>
 	 					<th class="date">
 	 						<a href="sort" data-bind="click: function() {sort('date'); }">Date</a>
+	 						<span data-bind="visible: sort.current() === 'date'">*</span>
 	 					</th>
 	 					<th class="description">
 	 						<a href="sort" data-bind="click: function() {sort('description'); }">Description</a>
+	 						<span data-bind="visible: sort.current() === 'description'">*</span>
 	 					</th>
 	 					<th class="cost">
 	 						<a href="sort" data-bind="click: function() {sort('cost'); }">Cost</a>
+	 						<span data-bind="visible: sort.current() === 'cost'">*</span>
 	 					</th>
 	 					<th class="tags">Tags</th>
 	 					<th class="edit"></th>
@@ -75,6 +78,12 @@
 		 			</tr>
 	 			</tbody>
  			</table>
+ 			<div class="filters" data-bind="visible: filter.current().length > 0">
+ 				Filters:
+ 				<ul data-bind="foreach: filter.current">
+	 				<li><a href="filter" data-bind="text: $data[0] + '=' + $data[1], click: function() { $parent.filter($data[0], $data[1]); }"></a></li>
+ 				</ul>
+			</div>
  		</div>
 
  		<div class="backup" data-bind="visible: visible">

@@ -106,21 +106,28 @@ function ExpendituresViewModel() {
 	}
 
 	self.sort = function(accessor) {
-		if (accessor === self.sort.current) {
+		if (accessor === self.sort.current()) {
 			self.sort.reverse = !self.sort.reverse;
 		} else {
 			self.sort.reverse = false;
 		}
-		accessor = accessor || self.sort.current;
+		accessor = accessor || self.sort.current();
 		self.items.sort(self.sort.factory(accessor));
-		self.sort.current = accessor;
+		self.sort.current(accessor);
 	}
-	self.sort.current = "date";
+	self.sort.current = ko.observable("date");
 	self.sort.reverse = false;
+	self.sort.is_num = /^-?\d*\.?\d+$/;
 	self.sort.factory = function(accessor) {
 		var f = function(l, r) {
-			if (l[accessor]() === r[accessor]()) return 0;
-			if (l[accessor]() < r[accessor]()) {
+			var lv = l[accessor]();
+			var rv = r[accessor]();
+			if (lv === rv) return 0;
+			if (accessor === "cost") {
+				lv = +lv;
+				rv = +rv;
+			}
+			if (lv < rv) {
 				return self.sort.reverse ? 1 : -1;
 			}
 			return self.sort.reverse ? -1 : 1;
@@ -130,36 +137,33 @@ function ExpendituresViewModel() {
 	self.sort();
 
 	self.filter = function(accessor, value) {
-		console.log(accessor, value);
-		if (accessor === self.filter.current) {
-			self.items(_.map(global.db.expenditure, function(o) {
-					return new ExpenditureItemViewModel(
-						o.id,
-						o.date,
-						o.description,
-						o.cost,
-						o.tags
-					);
-				})
-			);
-			self.filter.current = null;
+		if (_.some(self.filter.current(), function(o) { return o[0] === accessor && o[1] === value; })) {
+			self.filter.current(_.reject(self.filter.current(), function(f) {
+				return f[0] === accessor && f[1] === value;
+			}));
 		} else {
-			self.items(_.map(_.filter(global.db.expenditure, function(o) {
-					return o[accessor] === value || o[accessor].indexOf(value) !== -1;
-				}), function(o) {
-					return new ExpenditureItemViewModel(
-						o.id,
-						o.date,
-						o.description,
-						o.cost,
-						o.tags
-					);
-				})
-			);
-			self.filter.current = accessor;
+			self.filter.current.push([accessor, value]);
 		}
+		var items = _.map(global.db.expenditure, function(o) {
+			return new ExpenditureItemViewModel(
+				o.id,
+				o.date,
+				o.description,
+				o.cost,
+				o.tags
+			);
+		});
+		items = _.filter(items, function(item) {
+			return _.every(self.filter.current(), function(f) {
+				if (f[0] === "tags") {
+					return _.contains(item.split_tags(), f[1]);
+				}
+				return item[f[0]]() === f[1];
+			})
+		})
+		self.items(items);
 	}
-	self.filter.current = null;
+	self.filter.current = ko.observableArray();
 }
 
 global.expenditures = new ExpendituresViewModel();
