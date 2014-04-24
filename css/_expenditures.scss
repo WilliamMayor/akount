@@ -1,70 +1,54 @@
 .expenditures {
-	
-	.date {
-		width: 100px;
-		text-align: left;
-	}
-	.description {
-		width: 300px;
-		text-align: left;
-	}
-	.cost {
-		width: 100px;
-		text-align: left;
-	}
-	.tags {
-		width: 150px;
-		text-align: left;
-	}
-	.save {
-		background-color: $add;
-		border-color: #27ae60;
-		cursor: pointer;
-	}
-	table {
-		width: 100%;
-		border-collapse: collapse;
-		background-color: white;
-		border: 1px solid $border;
-		margin-top: 20px;
-		thead {
-			tr th {
-				border-bottom: 2px solid $border;
-				a {
-					color: $text;
-				}
-			}
-		}
-
-		td, th {
-			padding: 5px;
-		}
-
-		tbody tr {
-			.edit {
-				text-align: right;
-				a {
-					display: none;
-					text-decoration: none;
-					color: $text;
-					margin-left: 10px;
-
-					&.delete:hover {
-						color: #c0392b;
-					}
-					&.edit:hover {
-						color: #8e44ad;
-					}
-				}
-			}
-			&:hover {
-				background-color: #bdc3c7;
-				.edit a {
-					display: inline;
-				}
-			}
-		}
-	}
+	.row {
+        @include span-columns(12);
+        
+        &.head {
+            border-bottom: 1px solid $border;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+        
+        .cell {
+            min-height: 1em;
+            &.date, &.amount {
+                @include span-columns(2);
+                input {
+                    @include span-columns(2 of 2);
+                }
+            }
+            &.tags {
+                @include span-columns(3);
+                @include omega();
+                input {
+                    @include span-columns(2.5 of 2.5);
+                }
+            }
+            &.description {
+                @include span-columns(5);
+                input {
+                    @include span-columns(5 of 5);
+                }
+            }
+        }
+        .submit {
+            position: absolute;
+            top: -9999px;
+        }
+    }
+    .new {
+        .row {
+            border-bottom: 1px solid $border;
+            padding-bottom: 5px;
+            margin-bottom: 5px;
+        }
+    }
+    .items {
+        span, a {
+            display: inline-block;
+            padding: 6px;
+            margin: 2px 0;
+        }
+    }
 	.filters {
 		margin: 20px 0;
 		ul {

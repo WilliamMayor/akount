@@ -6,8 +6,8 @@
 body {
   font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
   font-weight: 300;
-  background-color: #ecf0f1;
-  color: #34495e;
+  background-color: white;
+  color: black;
   height: 100%; }
   body header {
     position: absolute;
@@ -16,7 +16,7 @@ body {
     left: 0px;
     width: 200px;
     padding: 20px;
-    border-right: 1px solid #7f8c8d; }
+    border-right: 1px solid gray; }
     body header h1 {
       margin: 0; }
     body header ul {
@@ -27,13 +27,13 @@ body {
         margin: 5px 0; }
         body header ul li a {
           text-decoration: none;
-          color: #34495e; }
+          color: black; }
           body header ul li a:hover {
             text-decoration: underline; }
       body header ul.global {
         position: absolute;
         bottom: 0px;
-        border-top: 1px solid #7f8c8d;
+        border-top: 1px solid gray;
         text-align: center;
         padding-top: 20px;
         width: 150px;
@@ -44,6 +44,7 @@ body {
   body main {
     position: absolute;
     left: 200px;
+    right: 0px;
     top: 0px;
     bottom: 0px;
     padding: 20px;
@@ -53,54 +54,81 @@ body {
       font-weight: 300;
       padding: 5px;
       font-size: 16px;
-      border: 1px solid #7f8c8d; }
+      border: 1px solid gray; }
       body main input:focus {
         outline: none;
-        border-color: #2980b9; }
+        border-color: red; }
+    body main a {
+      text-decoration: underline;
+      cursor: pointer; }
 
-.expenditures .date {
-  width: 100px;
-  text-align: left; }
-.expenditures .description {
-  width: 300px;
-  text-align: left; }
-.expenditures .cost {
-  width: 100px;
-  text-align: left; }
-.expenditures .tags {
-  width: 150px;
-  text-align: left; }
-.expenditures .save {
-  background-color: #2ecc71;
-  border-color: #27ae60;
-  cursor: pointer; }
-.expenditures table {
-  width: 100%;
-  border-collapse: collapse;
-  background-color: white;
-  border: 1px solid #7f8c8d;
-  margin-top: 20px; }
-  .expenditures table thead tr th {
-    border-bottom: 2px solid #7f8c8d; }
-    .expenditures table thead tr th a {
-      color: #34495e; }
-  .expenditures table td, .expenditures table th {
-    padding: 5px; }
-  .expenditures table tbody tr .edit {
-    text-align: right; }
-    .expenditures table tbody tr .edit a {
-      display: none;
-      text-decoration: none;
-      color: #34495e;
-      margin-left: 10px; }
-      .expenditures table tbody tr .edit a.delete:hover {
-        color: #c0392b; }
-      .expenditures table tbody tr .edit a.edit:hover {
-        color: #8e44ad; }
-  .expenditures table tbody tr:hover {
-    background-color: #bdc3c7; }
-    .expenditures table tbody tr:hover .edit a {
-      display: inline; }
+.expenditures .row {
+  float: left;
+  display: block;
+  margin-right: 2.35765%;
+  width: 100%; }
+  .expenditures .row:last-child {
+    margin-right: 0; }
+  .expenditures .row.head {
+    border-bottom: 1px solid gray;
+    padding-bottom: 5px;
+    margin-bottom: 5px; }
+  .expenditures .row .cell {
+    min-height: 1em; }
+    .expenditures .row .cell.date, .expenditures .row .cell.amount {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 14.70196%; }
+      .expenditures .row .cell.date:last-child, .expenditures .row .cell.amount:last-child {
+        margin-right: 0; }
+      .expenditures .row .cell.date input, .expenditures .row .cell.amount input {
+        float: left;
+        display: block;
+        margin-right: 16.03631%;
+        width: 100%; }
+        .expenditures .row .cell.date input:last-child, .expenditures .row .cell.amount input:last-child {
+          margin-right: 0; }
+    .expenditures .row .cell.tags {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 23.23176%;
+      margin-right: 0; }
+      .expenditures .row .cell.tags:last-child {
+        margin-right: 0; }
+      .expenditures .row .cell.tags input {
+        float: left;
+        display: block;
+        margin-right: 12.43037%;
+        width: 100%; }
+        .expenditures .row .cell.tags input:last-child {
+          margin-right: 0; }
+    .expenditures .row .cell.description {
+      float: left;
+      display: block;
+      margin-right: 2.35765%;
+      width: 40.29137%; }
+      .expenditures .row .cell.description:last-child {
+        margin-right: 0; }
+      .expenditures .row .cell.description input {
+        float: left;
+        display: block;
+        margin-right: 5.85151%;
+        width: 100%; }
+        .expenditures .row .cell.description input:last-child {
+          margin-right: 0; }
+  .expenditures .row .submit {
+    position: absolute;
+    top: -9999px; }
+.expenditures .new .row {
+  border-bottom: 1px solid gray;
+  padding-bottom: 5px;
+  margin-bottom: 5px; }
+.expenditures .items span, .expenditures .items a {
+  display: inline-block;
+  padding: 6px;
+  margin: 2px 0; }
 .expenditures .filters {
   margin: 20px 0; }
   .expenditures .filters ul {
