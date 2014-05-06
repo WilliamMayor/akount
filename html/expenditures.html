@@ -1,0 +1,96 @@
+<div class="expenditures">
+    <h3>Expenditures</h3>
+    <div class="row head">
+        <div class="cell date">
+            <a data-bind="click: function() {sort('date'); }">Date</a>
+            <span data-bind="visible: sort.current() === 'date' && sort.reverse() === true">
+                <i class="fa fa-chevron-up"></i>
+            </span>
+            <span data-bind="visible: sort.current() === 'date' && sort.reverse() === false">
+                <i class="fa fa-chevron-down"></i>
+            </span>
+        </div>
+        <div class="cell description">
+            <a data-bind="click: function() {sort('description'); }">Description</a>
+            <span data-bind="visible: sort.current() === 'description' && sort.reverse() === true">
+                <i class="fa fa-chevron-up"></i>
+            </span>
+            <span data-bind="visible: sort.current() === 'description' && sort.reverse() === false">
+                <i class="fa fa-chevron-down"></i>
+            </span>
+        </div>
+        <div class="cell amount">
+            <a data-bind="click: function() {sort('amount'); }">Amount</a>
+            <span data-bind="visible: sort.current() === 'amount' && sort.reverse() === true">
+                <i class="fa fa-chevron-up"></i>
+            </span>
+            <span data-bind="visible: sort.current() === 'amount' && sort.reverse() === false">
+                <i class="fa fa-chevron-down"></i>
+            </span>
+        </div>
+        <div class="cell tags">Tags</div>
+    </div>
+    <div class="row new" data-bind="template: { name: 'expenditure_item', data: _new }"></div>
+    <div class="row filters" data-bind="visible: filter.current().length > 0">
+        Filters:
+        <ul data-bind="foreach: filter.current">
+            <li><a href="filter" data-bind="text: $data[0] + '=' + $data[1], click: function() { $parent.filter($data[0], $data[1]); }"></a></li>
+        </ul>
+    </div>
+    <div class="items" data-bind="template: { name: 'expenditure_item', foreach: items }"></div>
+</div>
+<script type="text/html" id="expenditure_item">
+        <div class="row" data-bind="click: edit">
+            <form data-bind="submit: save">
+            <div class="cell date">
+                <a data-bind="text: date,
+                              click: function() {
+                                $parent.filter('date', date());
+                              },
+                              visible: editing() === false">
+                </a>
+                <input data-bind="value: date,
+                                  visible: editing() === true"
+                       placeholder="2014/01/01"
+                       type="text">
+                </input>
+            </div>
+            <div class="cell description">
+                <span data-bind="text: description,
+                                 visible: editing() === false">
+                </span>
+                <input data-bind="value: description,
+                                  visible: editing() === true"
+                       placeholder="Taxi ride from hotel"
+                       type="text">
+                </input>
+            </div>
+            <div class="cell amount">
+                <span data-bind="html: '&pound;' + amount(),
+                                 visible: editing() === false">
+                </span>
+                <input data-bind="value: amount,
+                                  visible: editing() === true"
+                       placeholder="10.00"
+                       type="number"
+                       step="0.01">
+                </input>
+            </div>
+            <div class="cell tags">
+                <!-- ko foreach: split_tags -->
+                <a data-bind="text: $data,
+                              click: function() { $root.filter('tags', $data); },
+                              visible: $parent.editing() === false">
+                </a>
+                <!-- /ko -->
+                <input data-bind="value: tags,
+                                  visible: editing() === true"
+                       placeholder="travel, taxi"
+                       type="text">
+                </input>
+            </div>
+            <input class="submit" type="submit" />
+            </form>
+        </div>
+    </script>
+<script src="../js/expenditures.js"></script>

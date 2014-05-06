@@ -1,65 +1,60 @@
 .expenditures {
-	.row {
-        @include span-columns(12);
-        
-        &.head {
-            border-bottom: 1px solid $border;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
-        }
-        
-        .cell {
-            min-height: 1em;
-            &.date, &.amount {
-                @include span-columns(2);
-                input {
-                    @include span-columns(2 of 2);
-                }
-            }
-            &.tags {
-                @include span-columns(3);
-                @include omega();
-                input {
-                    @include span-columns(2.5 of 2.5);
-                }
-            }
-            &.description {
-                @include span-columns(5);
-                input {
-                    @include span-columns(5 of 5);
-                }
-            }
-        }
-        .submit {
-            position: absolute;
-            top: -9999px;
-        }
+    height: 100%;
+    padding-right: 20px;
+    
+    .row {
+        @include span-columns(10 of 10);
+    }
+    .date {
+        @include span-columns(2 of 10);
+    }
+    .description {
+        @include span-columns(4 of 10);
+        cursor: pointer;
+    }
+    .amount {
+        @include span-columns(2 of 10);
+    }
+    .tags {
+        @include span-columns(2 of 10);
+        @include omega();
+    }
+    .submit {
+        position: absolute;
+        top: -300px;
+    }
+    h3 {
+        margin-top: 8px;
+        margin-bottom: 40px;
     }
     .new {
-        .row {
-            border-bottom: 1px solid $border;
-            padding-bottom: 5px;
-            margin-bottom: 5px;
-        }
+        margin-top: 10px;
+        margin-bottom: 10px;
+        border-top: 1px solid $base-border-color;
+        border-bottom: 1px solid $base-border-color;
+        padding-top: 10px;
     }
     .items {
-        span, a {
+        .date a, .description span, .amount span, .tags a,
+        .date input, .description input, .amount input, .tags input {
             display: inline-block;
-            padding: 6px;
-            margin: 2px 0;
+            padding: 0.5em;
+            margin: 0.365em 0;
+            line-height:normal;
+        }
+        .row:nth-child(2n) {
+            background-color: $base-border-color;
+        }
+        .row:hover {
+            background-color: $light-yellow;
         }
     }
-	.filters {
-		margin: 20px 0;
-		ul {
-			list-style-type: none;
-			margin: 0;
-			padding: 0;
-			display: inline;
-
-			li {
-				display: inline;
-			}
-		}
-	}
+    .filters {
+        ul {
+            display: inline-block;
+            li {
+                display: inline-block;
+            }
+        }
+    }
 }

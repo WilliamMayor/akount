@@ -19,11 +19,36 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
 	});
 
 	self.save = function() {
-		self.editing(false);
+        var i = self.to_object();
+        if (self.id() === -1) {
+            delete i.id;
+            _.insert(global.db.expenditure, i);
+            _.save(global.db, global.db_path);
+            global.events.publish("newExpenditureItem", i);
+            self.date("");
+            self.description("");
+            self.amount("");
+            self.tags("");
+        } else {
+            _.update(global.db.expenditure, i.id, i);
+            _.save(global.db, global.db_path);
+            global.events.publish("saveExpenditureItem", self);
+            self.editing(false);
+        }
 	};
     self.edit = function() {
-		self.editing(true);
+        self.editing(true);
+        return true;
 	};
+    self.to_object = function() {
+        return {
+            id: self.id(),
+            date: self.date(),
+            description: self.description(),
+            amount: self.amount(),
+            tags: self.tags()
+        };
+    }
 }
 
 function ExpendituresViewModel() {
@@ -34,7 +59,7 @@ function ExpendituresViewModel() {
     self._new().editing(true);
 
 	self.all = function() {
-		var items = _.map(global.db.expenditure, function(o) {
+		return _.map(global.db.expenditure, function(o) {
 			return new ExpenditureItemViewModel(
 				o.id,
 				o.date,
@@ -43,30 +68,10 @@ function ExpendituresViewModel() {
 				o.tags
 			);
 		});
-        if (items.length === 0) {
-            var d = new Date();
-            for (var i=0; i<50; i++) {
-                var e = new Date(d.getFullYear(), d.getMonth(), d.getDate()+i);
-                items.push(new ExpenditureItemViewModel(
-                    i,
-                    e.getFullYear() + '/' + e.getMonth() + '/' + e.getDate(),
-                    'Purchase ' + i,
-                    i * 100,
-                    (i % 2 == 0) ? 'a' : 'b'
-                ));
-            }
-        }
-		return items;
 	}
 
 	self.items = ko.observableArray(self.all());
 
-	self.show = function() {
-		self.visible(true);
-	}
-	self.hide = function() {
-		self.visible(false);
-	}
 	self.save = function() {
 		
 	}
@@ -82,7 +87,7 @@ function ExpendituresViewModel() {
 	self.sort = function(accessor) {
 		if (accessor === self.sort.current()) {
 			self.sort.reverse(!self.sort.reverse());
-		} else {
+		} else if (arguments.length === 1) {
 			self.sort.reverse(false);
 		}
 		accessor = accessor || self.sort.current();
@@ -91,21 +96,38 @@ function ExpendituresViewModel() {
 	}
 	self.sort.current = ko.observable("date");
 	self.sort.reverse = ko.observable(false);
-	self.sort.is_num = /^-?\d*\.?\d+$/;
-	self.sort.factory = function(accessor) {
-		var f = function(l, r) {
-			var lv = l[accessor]();
-			var rv = r[accessor]();
-			if (lv === rv) return 0;
-			if (accessor === "amount") {
-				lv = +lv;
-				rv = +rv;
-			}
-			if (lv < rv) {
-				return self.sort.reverse() ? 1 : -1;
-			}
-			return self.sort.reverse() ? -1 : 1;
-		}
+	self.sort.factory = function (accessor) {
+        var f = function (l, r) {
+            function chunkify(t) {
+                var tz = [], x = 0, y = -1, n = 0, i, j;
+                while (i = (j = t.charAt(x++)).charCodeAt(0)) {
+                    var m = (i == 46 || (i >=48 && i <= 57));
+                    if (m !== n) {
+                        tz[++y] = "";
+                        n = m;
+                    }
+                    tz[y] += j;
+                }
+                return tz;
+            }
+            function cmp(a, b) {
+                var aa = chunkify(a);
+                var bb = chunkify(b);
+                for (x = 0; aa[x] && bb[x]; x++) {
+                    if (aa[x] !== bb[x]) {
+                        var c = Number(aa[x]), d = Number(bb[x]);
+                        if (c == aa[x] && d == bb[x]) {
+                            return c - d;
+                        } else return (aa[x] > bb[x]) ? 1 : -1;
+                    }
+                }
+                return aa.length - bb.length;
+            }
+            r = cmp(l[accessor]() + "", r[accessor]() + "");
+            if (r === 0) return 0;
+            if (r > 0) return self.sort.reverse() ? 1 : -1;
+            return self.sort.reverse() ? -1 : 1;
+        }
 		return f;
 	}
 	self.sort();
@@ -115,7 +137,7 @@ function ExpendituresViewModel() {
 			self.filter.current(_.reject(self.filter.current(), function(f) {
 				return f[0] === accessor && f[1] === value;
 			}));
-		} else {
+		} else if (arguments.length === 2) {
 			self.filter.current.push([accessor, value]);
 		}
 		var items = _.filter(self.all(), function(item) {
@@ -129,6 +151,18 @@ function ExpendituresViewModel() {
 		self.items(items);
 	}
 	self.filter.current = ko.observableArray();
+    
+    self.draw = function() {
+        self.filter();
+        self.sort();
+    }
+    
+    global.events.subscribe("newExpenditureItem", function(event, item) {
+        self.draw();
+    });
+    global.events.subscribe("saveExpenditureItem", function(event, item) {
+        self.draw();
+    });
 }
 
 global.expenditures = new ExpendituresViewModel();

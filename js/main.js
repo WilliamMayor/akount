@@ -22,16 +22,21 @@ $("header a").click(function(e) {
 	if (a.attr("target") === "_blank") {
 		global.gui.Shell.openExternal(href);
 	} else {
-		$.each($("header a"), function(i, value) {
-			var a  = $(value);
-			if (a.attr("target") !== "_blank") {
-				var href = a.attr("href");
-				global[href].hide();
-			}
-		});
-		global[href].show();
+		$("main").load(href);
 	}
 
 	e.preventDefault();
 	return false;
 });
+
+global.events = {
+    subscribe: function(event, fn) {
+        $(this).bind(event, fn);
+    },
+    unsubscribe: function(event, fn) {
+        $(this).unbind(event, fn);
+    },
+    publish: function(event, data) {
+        $(this).trigger(event, data);
+    }
+};

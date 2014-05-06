@@ -1,83 +1,35 @@
+html {
+    height: 100%;
+}
 body {
-	font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-	font-weight: 300;
-	background-color: $background;
-	color: $text;
-	height: 100%;
-
-	header {
-		position: absolute;
-		top: 20px;
-		bottom: 20px;
-		left: 0px;
-		width: 200px;
-		padding: 20px;
-		border-right: 1px solid $border;
-
-		h1 {
-			margin: 0;
-		}
-
-		ul {
-			list-style-type: none;
-			margin: 20px 0;
-			padding: 0;
-
-			li {
-				margin: 5px 0;
-
-				a {
-					text-decoration: none;
-					color: $text;
-
-					&:hover {
-						text-decoration: underline;						
-					}
-				}
-			}
-
-			&.global {
-				position: absolute;
-				bottom: 0px;
-				border-top: 1px solid $border;
-				text-align: center;
-				padding-top: 20px;
-				width: 150px;
-				margin: auto;
-
-				li {
-					display: inline;
-					margin: 0 10px;
-				}
-			}
-		}
-	}
-
-	main {
-		position: absolute;
-		left: 200px;
-		right: 0px;
-		top: 0px;
-		bottom: 0px;
-		padding: 20px;
-		overflow-y: auto;
-
-		input {
-			font-family: "HelveticaNeue-Light", "Helvetica Neue Light", "Helvetica Neue", Helvetica, Arial, "Lucida Grande", sans-serif;
-			font-weight: 300;
-			padding: 5px;
-			font-size: 16px;
-			border: 1px solid $border;
-
-			&:focus {
-				outline: none;
-				border-color: $highlight;
-			}
-		}
-        
-        a {
-            text-decoration: underline;
-            cursor: pointer;
+    @include outer-container();
+    height: 100%;
+    
+    a {
+        cursor: pointer;
+    }
+    
+    header {
+        @include span-columns(2);
+        border-right: 1px solid $base-border-color;
+        height: 100%;
+        h1 {
+            text-align: center;
         }
-	}
+        h2 {
+            font-size: 20px;
+            line-height: 16px;
+            margin: auto 10px;
+        }
+        ul {
+            margin: 20px;
+        }
+    }
+    
+    main {
+        @include span-columns(10);
+        @include omega();
+        height: 100%;
+        overflow: auto;
+    }
 }

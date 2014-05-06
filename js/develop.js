@@ -8,4 +8,5 @@ var global;
 	   		location.reload();
 	   	}
 	});
+    $(".main a")[2].click();
 })();
