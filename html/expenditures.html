@@ -89,6 +89,21 @@
                        type="text">
                 </input>
             </div>
+            <div class="cell files" data-bind="visible: id() !== -1 && editing() === true">
+                <ul data-bind="foreach: files">
+                    <li><a href="open" data-bind="text: name"></a></li>
+                </ul>
+            </div>
+            <div class="cell actions" data-bind="visible: id() !== -1 && editing() === true">
+                <ul>
+                    <li><a href="addfile"><i class="fa fa-file-text fa-lg"></i></a></li>
+                    <li><a href="takephoto"><i class="fa fa-camera fa-lg"></i></a></li>
+                    <li><a href="delete" 
+                           data-bind="click: remove">
+                        <i class="fa fa-ban fa-lg"></i></a></li>
+                    <li><a href="save" data-bind="click: save"><i class="fa fa-save fa-lg"></i></a></li>
+                </ul>
+            </div>
             <input class="submit" type="submit" />
             </form>
         </div>

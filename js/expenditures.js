@@ -3,12 +3,18 @@ var global, ko, _;
 function ExpenditureItemViewModel(id, date, description, amount, tags) {
 	'use strict';
     var self = this;
+    
+    self.path = global.files_path + global.crypto
+        .createHash("MD5")
+        .update("expenditure" + id)
+        .digest("hex");
 
 	self.id = ko.observable(id);
 	self.date = ko.observable(date);
 	self.description = ko.observable(description);
 	self.amount = ko.observable(amount);
 	self.tags = ko.observable(tags);
+    self.files = ko.observableArray([]);
     
     self.editing = ko.observable(false);
 
@@ -17,14 +23,14 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
 			return value.trim();
 		});
 	});
-
+    
 	self.save = function() {
         var i = self.to_object();
         if (self.id() === -1) {
             delete i.id;
             _.insert(global.db.expenditure, i);
             _.save(global.db, global.db_path);
-            global.events.publish("newExpenditureItem", i);
+            global.events.publish("expenditureChanged", i);
             self.date("");
             self.description("");
             self.amount("");
@@ -32,14 +38,38 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
         } else {
             _.update(global.db.expenditure, i.id, i);
             _.save(global.db, global.db_path);
-            global.events.publish("saveExpenditureItem", self);
+            global.events.publish("expenditureChanged", self);
             self.editing(false);
         }
 	};
+    self.remove = function() {
+		_.remove(global.db.expenditure, self.id());
+		_.save(global.db, global.db_path);
+        global.events.publish("expenditureChanged", self);
+	};
     self.edit = function() {
+        self.list();
         self.editing(true);
         return true;
 	};
+    self.list = function () {
+        global.fs.readdir(self.path, function (err, files) {
+            var f = [];
+            if (!err) {
+                files.map(function (file) {
+                    return global.path.join(self.path, file);
+                }).filter(function (file) {
+                    return global.fs.statSync(file).isFile();
+                }).forEach(function (file) {
+                    f.push({
+                        name: global.path.basename(file),
+                        path: file
+                    });
+                });
+            }
+            self.files(f);
+        });
+    };
     self.to_object = function() {
         return {
             id: self.id(),
@@ -49,13 +79,15 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
             tags: self.tags()
         };
     }
+    self.list();
 }
 
 function ExpendituresViewModel() {
 	var self = this;
 
 	self.visible = ko.observable(true);
-    self._new = ko.observable(new ExpenditureItemViewModel(-1,'','','','',''));
+    self._new = ko.observable(new ExpenditureItemViewModel(
+        -1,'','','',''));
     self._new().editing(true);
 
 	self.all = function() {
@@ -71,18 +103,6 @@ function ExpendituresViewModel() {
 	}
 
 	self.items = ko.observableArray(self.all());
-
-	self.save = function() {
-		
-	}
-	self.load = function(item) {
-		
-	}
-	self.delete = function(item) {
-		self.items.remove(item);
-		_.remove(global.db.expenditure, item.id());
-		_.save(global.db, global.db_path);
-	}
 
 	self.sort = function(accessor) {
 		if (accessor === self.sort.current()) {
@@ -157,10 +177,7 @@ function ExpendituresViewModel() {
         self.sort();
     }
     
-    global.events.subscribe("newExpenditureItem", function(event, item) {
-        self.draw();
-    });
-    global.events.subscribe("saveExpenditureItem", function(event, item) {
+    global.events.subscribe("expenditureChanged", function(event, item) {
         self.draw();
     });
 }

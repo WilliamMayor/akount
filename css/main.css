@@ -661,8 +661,7 @@ body {
     float: left;
     display: block;
     margin-right: 2.84259%;
-    width: 38.29445%;
-    cursor: pointer; }
+    width: 38.29445%; }
     .expenditures .description:last-child {
       margin-right: 0; }
   .expenditures .amount {
@@ -679,6 +678,36 @@ body {
     width: 17.72593%;
     margin-right: 0; }
     .expenditures .tags:last-child {
+      margin-right: 0; }
+  .expenditures .files {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 89.71574%;
+    border: 1px solid #dddddd;
+    min-height: 100px;
+    margin-bottom: 10px;
+    padding: 10px; }
+    .expenditures .files:last-child {
+      margin-right: 0; }
+    .expenditures .files ul li {
+      display: inline-block;
+      float: left;
+      display: block;
+      margin-right: 3.16844%;
+      width: 31.22104%;
+      margin-right: 0; }
+      .expenditures .files ul li:last-child {
+        margin-right: 0; }
+  .expenditures .actions {
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 7.44167%;
+    margin-right: 0;
+    text-align: right;
+    padding: 0 20px; }
+    .expenditures .actions:last-child {
       margin-right: 0; }
   .expenditures .submit {
     position: absolute;

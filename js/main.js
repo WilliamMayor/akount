@@ -1,16 +1,18 @@
 var global = {
 	gui: require('nw.gui'),
 	fs: require("fs"),
-	db_path: "./db.json",
-	db: _.load("./db.json"),
-
-	Gaze: require('gaze').Gaze
+	db_path: "/Users/william/Dropbox/akount/db.json",
+	db: _.load("/Users/william/Dropbox/akount/db.json"),
+    files_path: "/Users/william/Dropbox/akount/files/",
+	Gaze: require('gaze').Gaze,
+    crypto: require('crypto'),
+    fs: require('fs'),
+    path: require('path')
 };
 
 if (global.db === null) {
 	global.db = {
-		expenditure: [],
-		invoices: []
+		expenditure: []
 	}
 }
 
