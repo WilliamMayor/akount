@@ -1,9 +1,10 @@
 var global, ko, _;
+_ = global.underscore;
 
 function ExpenditureItemViewModel(id, date, description, amount, tags) {
 	'use strict';
     var self = this;
-    
+
     self.path = global.files_path + global.crypto
         .createHash("MD5")
         .update("expenditure" + id)
@@ -14,16 +15,36 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
 	self.description = ko.observable(description);
 	self.amount = ko.observable(amount);
 	self.tags = ko.observable(tags);
+	self.add_file_path = ko.observable();
     self.files = ko.observableArray([]);
-    
-    self.editing = ko.observable(false);
 
+    self.editing = ko.observable(false);
+	self.open_attachment = function(item) {
+		global.gui.Shell.openItem(item.path);
+	};
+	self.add_file_path.subscribe(function(old_path) {
+		var name, new_path, ifd, ofd;
+		name = global.path.basename(old_path);
+		new_path = global.path.join(self.path, name);
+		global.mkdirp(self.path, function(err) {
+			if (!err) {
+				ofd = global.fs.createReadStream(old_path);
+				ifd = global.fs.createWriteStream(new_path);
+				ofd.on('end', function() {
+					self.list();
+				});
+				ofd.pipe(ifd);
+			}
+		});
+	});
+	self.add_file = function() {
+		$('#e_' + self.id()).trigger('click');
+	};
 	self.split_tags = ko.computed(function () {
 		return _.map(self.tags().split(','), function(value) {
 			return value.trim();
 		});
 	});
-    
 	self.save = function() {
         var i = self.to_object();
         if (self.id() === -1) {
@@ -43,6 +64,7 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
         }
 	};
     self.remove = function() {
+		global.rmdir(self.path);
 		_.remove(global.db.expenditure, self.id());
 		_.save(global.db, global.db_path);
         global.events.publish("expenditureChanged", self);
@@ -78,8 +100,11 @@ function ExpenditureItemViewModel(id, date, description, amount, tags) {
             amount: self.amount(),
             tags: self.tags()
         };
-    }
-    self.list();
+    };
+    self.take_photo = function() {
+		global.take_photo(self.path, self.list);
+	};
+	self.list();
 }
 
 function ExpendituresViewModel() {
@@ -100,7 +125,7 @@ function ExpendituresViewModel() {
 				o.tags
 			);
 		});
-	}
+	};
 
 	self.items = ko.observableArray(self.all());
 
@@ -113,7 +138,7 @@ function ExpendituresViewModel() {
 		accessor = accessor || self.sort.current();
 		self.items.sort(self.sort.factory(accessor));
 		self.sort.current(accessor);
-	}
+	};
 	self.sort.current = ko.observable("date");
 	self.sort.reverse = ko.observable(false);
 	self.sort.factory = function (accessor) {
@@ -147,9 +172,9 @@ function ExpendituresViewModel() {
             if (r === 0) return 0;
             if (r > 0) return self.sort.reverse() ? 1 : -1;
             return self.sort.reverse() ? -1 : 1;
-        }
+        };
 		return f;
-	}
+	};
 	self.sort();
 
 	self.filter = function(accessor, value) {
@@ -166,17 +191,17 @@ function ExpendituresViewModel() {
 					return _.contains(item.split_tags(), f[1]);
 				}
 				return item[f[0]]() === f[1];
-			})
-		})
+			});
+		});
 		self.items(items);
-	}
+	};
 	self.filter.current = ko.observableArray();
-    
+
     self.draw = function() {
         self.filter();
         self.sort();
-    }
-    
+    };
+
     global.events.subscribe("expenditureChanged", function(event, item) {
         self.draw();
     });

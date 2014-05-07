@@ -11,10 +11,14 @@ body {
     
     header {
         @include span-columns(2);
-        border-right: 1px solid $base-border-color;
         height: 100%;
+        @include pad(10px 0);
+        .container {
+            height: 100%;
+            border-right: 1px solid $base-border-color;
+        }
         h1 {
-            text-align: center;
+            margin: auto 10px;
         }
         h2 {
             font-size: 20px;

@@ -617,12 +617,15 @@ body {
     display: block;
     margin-right: 2.35765%;
     width: 14.70196%;
-    border-right: 1px solid #dddddd;
-    height: 100%; }
+    height: 100%;
+    padding: 10px 0; }
     body header:last-child {
       margin-right: 0; }
+    body header .container {
+      height: 100%;
+      border-right: 1px solid #dddddd; }
     body header h1 {
-      text-align: center; }
+      margin: auto 10px; }
     body header h2 {
       font-size: 20px;
       line-height: 16px;
@@ -679,36 +682,44 @@ body {
     margin-right: 0; }
     .expenditures .tags:last-child {
       margin-right: 0; }
-  .expenditures .files {
+  .expenditures .files .add {
     float: left;
     display: block;
     margin-right: 2.84259%;
-    width: 89.71574%;
+    width: 17.72593%;
+    text-align: right; }
+    .expenditures .files .add:last-child {
+      margin-right: 0; }
+    .expenditures .files .add p {
+      margin-top: 50px; }
+      .expenditures .files .add p a {
+        margin: 0 10px; }
+  .expenditures .files ul {
+    display: inline-block;
     border: 1px solid #dddddd;
-    min-height: 100px;
-    margin-bottom: 10px;
-    padding: 10px; }
-    .expenditures .files:last-child {
+    height: 100px;
+    float: left;
+    display: block;
+    margin-right: 2.84259%;
+    width: 28.01019%;
+    padding: 10px;
+    overflow-y: auto; }
+    .expenditures .files ul:last-child {
       margin-right: 0; }
-    .expenditures .files ul li {
-      display: inline-block;
-      float: left;
-      display: block;
-      margin-right: 3.16844%;
-      width: 31.22104%;
-      margin-right: 0; }
-      .expenditures .files ul li:last-child {
-        margin-right: 0; }
+  .expenditures .files input {
+    display: none; }
   .expenditures .actions {
     float: left;
     display: block;
     margin-right: 2.84259%;
-    width: 7.44167%;
+    width: 48.57871%;
     margin-right: 0;
-    text-align: right;
-    padding: 0 20px; }
+    text-align: right; }
     .expenditures .actions:last-child {
       margin-right: 0; }
+    .expenditures .actions a {
+      display: block;
+      margin: 20px 0; }
   .expenditures .submit {
     position: absolute;
     top: -300px; }
@@ -727,11 +738,141 @@ body {
     padding: 0.5em;
     margin: 0.365em 0;
     line-height: normal; }
-  .expenditures .items .row:nth-child(2n) {
-    background-color: #dddddd; }
-  .expenditures .items .row:hover {
-    background-color: #fff6bf; }
+  .expenditures .items .row {
+    border-bottom: 1px solid #dddddd; }
   .expenditures .filters ul {
     display: inline-block; }
     .expenditures .filters ul li {
       display: inline-block; }
+
+.modal label {
+  cursor: pointer;
+  margin-bottom: 0; }
+.modal label img {
+  border-radius: 150px;
+  display: block;
+  max-width: 300px; }
+.modal input[type="checkbox"] {
+  display: none; }
+.modal .btn {
+  border: 1px solid #dbdbdb;
+  border-radius: 3px;
+  box-shadow: inset 0 1px 0 0 white;
+  color: #333333;
+  display: inline-block;
+  font-size: 11px;
+  font-weight: bold;
+  background-color: white;
+  background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, white), color-stop(100%, #e3e3e3));
+  background-image: -webkit-linear-gradient(white, #e3e3e3);
+  background-image: linear-gradient(white, #e3e3e3);
+  padding: 7px 18px;
+  text-decoration: none;
+  text-shadow: 0 1px 0 white;
+  background-clip: padding-box;
+  font-size: 1em;
+  margin-bottom: 1.5em; }
+  .modal .btn:hover:not(:disabled) {
+    box-shadow: inset 0 1px 0 0 white;
+    cursor: pointer;
+    background-color: #f2f2f2;
+    background-image: -webkit-gradient(linear, left top, left bottom, color-stop(0%, #f2f2f2), color-stop(100%, #dbdbdb));
+    background-image: -webkit-linear-gradient(#f2f2f2, #dbdbdb);
+    background-image: linear-gradient(#f2f2f2, #dbdbdb); }
+  .modal .btn:active:not(:disabled) {
+    border: 1px solid #dbdbdb;
+    box-shadow: inset 0 0 8px 4px #d4d4d4, inset 0 0 8px 4px #d4d4d4, 0 1px 1px 0 #eeeeee; }
+  .modal .btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed; }
+.modal .modal-open {
+  overflow: hidden; }
+.modal .modal-window {
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+  position: fixed;
+  top: 0px;
+  right: 0px;
+  bottom: 0px;
+  left: 0px;
+  background: rgba(0, 0, 0, 0.85);
+  opacity: 0;
+  text-align: left;
+  visibility: hidden;
+  z-index: 99999999999; }
+  .modal .modal-window .modal-bg {
+    position: absolute;
+    top: 0px;
+    right: 0px;
+    bottom: 0px;
+    left: 0px;
+    cursor: pointer; }
+.modal .modal-close {
+  position: absolute;
+  top: 0.5em;
+  right: 0.5em;
+  width: 1.5em;
+  height: 1.5em;
+  cursor: pointer;
+  background: white; }
+  .modal .modal-close:after, .modal .modal-close:before {
+    position: absolute;
+    top: 3px;
+    right: 3px;
+    left: 50%;
+    -webkit-transform: rotate(45deg);
+    -moz-transform: rotate(45deg);
+    -ms-transform: rotate(45deg);
+    -o-transform: rotate(45deg);
+    transform: rotate(45deg);
+    width: 0.15em;
+    height: 1.5em;
+    background: #dddddd;
+    content: '';
+    display: block;
+    margin: -3px 0 0 -1px; }
+  .modal .modal-close:hover:after, .modal .modal-close:hover:before {
+    background: #c4c4c4; }
+  .modal .modal-close:before {
+    -webkit-transform: rotate(-45deg);
+    -moz-transform: rotate(-45deg);
+    -ms-transform: rotate(-45deg);
+    -o-transform: rotate(-45deg);
+    transform: rotate(-45deg); }
+.modal .modal-inner {
+  -webkit-transition: opacity 0.25s ease;
+  -moz-transition: opacity 0.25s ease;
+  transition: opacity 0.25s ease;
+  border-radius: 0.1875em;
+  background: white;
+  margin: auto;
+  max-height: 95%;
+  position: relative;
+  overflow: auto;
+  padding: 0.5em;
+  width: 60%;
+  margin-top: 5em;
+  text-align: center; }
+  .modal .modal-inner h1 {
+    color: #333333;
+    margin-bottom: .6em;
+    text-align: left; }
+  .modal .modal-inner video {
+    width: 320px;
+    margin: auto; }
+  .modal .modal-inner label, .modal .modal-inner input {
+    display: inline-block; }
+  .modal .modal-inner label {
+    width: 80px;
+    margin-right: 20px;
+    text-align: right; }
+  .modal .modal-inner input[type=text] {
+    width: 400px; }
+  .modal .modal-inner canvas {
+    display: none; }
+.modal .modal-state:checked + .modal-window {
+  opacity: 1;
+  visibility: visible; }
+.modal .modal-state:checked + .modal-window .modal-inner {
+  top: 0; }

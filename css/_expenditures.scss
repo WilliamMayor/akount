@@ -1,7 +1,7 @@
 .expenditures {
     height: 100%;
     padding-right: 20px;
-    
+
     .row {
         @include span-columns(10 of 10);
     }
@@ -19,24 +19,36 @@
         @include omega();
     }
     .files {
-        @include span-columns(9 of 10);
-        border: 1px solid $base-border-color;
-        min-height: 100px;
-        margin-bottom: 10px;
-        @include pad(10px);
-        ul {
-            li {
-                display: inline-block;
-                @include span-columns(3 of 9);
-                @include omega();
+        .add {
+            @include span-columns(2 of 10);
+            text-align: right;
+            p {
+                margin-top: 50px;
+                a {
+                    margin: 0 10px;
+                }
             }
+        }
+        ul {
+            display: inline-block;
+            border: 1px solid $base-border-color;
+            height: 100px;
+            @include span-columns(3 of 10);
+            @include pad(10px);
+            overflow-y: auto;
+        }
+        input {
+            display: none;
         }
     }
     .actions {
-        @include span-columns(1 of 10);
+        @include span-columns(5 of 10);
         @include omega();
         text-align: right;
-        @include pad(0 20px);
+        a {
+            display: block;
+            margin: 20px 0;
+        }
     }
     .submit {
         position: absolute;
@@ -61,11 +73,8 @@
             margin: 0.365em 0;
             line-height:normal;
         }
-        .row:nth-child(2n) {
-            background-color: $base-border-color;
-        }
-        .row:hover {
-            background-color: $light-yellow;
+        .row {
+            border-bottom: 1px solid $base-border-color;
         }
     }
     .filters {

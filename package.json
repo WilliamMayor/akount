@@ -6,6 +6,7 @@
         "icon": "./images/icon.png",
         "toolbar": true,
         "frame": true,
-        "width": 1000
+        "width": 1000,
+        "height": 720
       }
 }

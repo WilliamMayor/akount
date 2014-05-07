@@ -1,0 +1,124 @@
+.modal {
+  $modal-padding: 1em;
+  $modal-background: $base-body-color;
+  $modal-close-color: $light-gray;
+  $modal-image-height: 135px;
+  $modal-image-width: $modal-image-height;
+
+  label {
+    cursor: pointer;
+    margin-bottom: 0;
+  }
+
+  label img {
+    $img-width: 300px;
+    border-radius: $img-width/2;
+    display: block;
+    max-width: $img-width;
+  }
+
+  input[type="checkbox"] {
+    display: none;
+  }
+
+  .btn {
+    @include button(simple, $base-body-color);
+    font-size: $base-font-size;
+    margin-bottom: $base-line-height;
+  }
+
+  .modal-open {
+    overflow: hidden;
+  }
+
+  .modal-window { // overlay
+    @include transition(opacity .25s ease);
+    @include position(fixed, 0px 0px 0px 0px);
+    background: rgba(0,0,0, .85);
+    opacity: 0;
+    text-align: left;
+    visibility: hidden;
+    z-index: 99999999999;
+
+    .modal-bg {
+      @include position(absolute, 0px 0px 0px 0px);
+      cursor: pointer;
+    }
+  }
+
+  .modal-close {
+    @include position(absolute, ($modal-padding /2) ($modal-padding /2) 0 0);
+    @include size(1.5em);
+    cursor: pointer;
+    background: $modal-background;
+
+    &:after,
+    &:before {
+      @include position(absolute, 3px 3px 0 50%);
+      @include transform(rotate(45deg));
+      @include size(.15em 1.5em);
+      background: $modal-close-color;
+      content: '';
+      display: block;
+      margin: -3px 0 0 -1px;
+    }
+
+    &:hover:after,
+    &:hover:before {
+      background: darken($modal-close-color, 10);
+    }
+
+    &:before {
+      @include transform(rotate(-45deg));
+    }
+  }
+
+  .modal-inner {
+    @include transition(opacity .25s ease);
+    border-radius: $base-border-radius;
+    background: $modal-background;
+    margin: auto;
+    max-height: 95%;
+    position: relative;
+    overflow: auto;
+    padding: $modal-padding /2;
+    width: 60%;
+    margin-top: 5em;
+    text-align: center;
+
+    h1 {
+      color: $base-font-color;
+      margin-bottom: .6em;
+      text-align: left;
+    }
+    video {
+        width: 320px;
+        margin: auto;
+    }
+    label, input {
+        display: inline-block;
+    }
+    label {
+        width: 80px;
+        margin-right: 20px;
+        text-align: right;
+    }
+    input[type=text] {
+        width: 400px;
+    }
+    canvas {
+        display: none;
+    }
+  }
+
+  .modal-state:checked + .modal-window {
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .modal-state:checked + .modal-window .modal-inner {
+    top: 0;
+  }
+}
+
+// Based on code by Kasper Mikiewicz

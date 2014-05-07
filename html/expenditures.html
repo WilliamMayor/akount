@@ -79,7 +79,9 @@
             <div class="cell tags">
                 <!-- ko foreach: split_tags -->
                 <a data-bind="text: $data,
-                              click: function() { $root.filter('tags', $data); },
+                              click: function() {
+                                  $root.filter('tags', $data);
+                              },
                               visible: $parent.editing() === false">
                 </a>
                 <!-- /ko -->
@@ -90,19 +92,31 @@
                 </input>
             </div>
             <div class="cell files" data-bind="visible: id() !== -1 && editing() === true">
+                <input data-bind="value: add_file_path,
+                                  attr: {id: 'e_' + id()}"
+                       type="file" />
+                <div class="add">
+                    <a data-bind="attr: {href: path},
+                                  click: open_attachment">Attachments</a>
+                    <p>
+                        Add:
+                        <a href="add_file" data-bind="click: add_file"><i class="fa fa-file-text fa-lg"></i></a>
+                        <a href="take_photo" data-bind="click: take_photo"><i class="fa fa-camera fa-lg"></i></a>
+                    </p>
+                </div>
                 <ul data-bind="foreach: files">
-                    <li><a href="open" data-bind="text: name"></a></li>
+                    <li><a data-bind="text: name,
+                                      attr: {href: path},
+                                      click: $parent.open_attachment"></a></li>
                 </ul>
             </div>
             <div class="cell actions" data-bind="visible: id() !== -1 && editing() === true">
-                <ul>
-                    <li><a href="addfile"><i class="fa fa-file-text fa-lg"></i></a></li>
-                    <li><a href="takephoto"><i class="fa fa-camera fa-lg"></i></a></li>
-                    <li><a href="delete" 
-                           data-bind="click: remove">
-                        <i class="fa fa-ban fa-lg"></i></a></li>
-                    <li><a href="save" data-bind="click: save"><i class="fa fa-save fa-lg"></i></a></li>
-                </ul>
+                <a href="save" data-bind="click: save">
+                    Save
+                </a>
+                <a href="delete" data-bind="click: remove">
+                    Delete
+                </a>
             </div>
             <input class="submit" type="submit" />
             </form>

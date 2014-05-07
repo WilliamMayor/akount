@@ -1,0 +1,13 @@
+<input class="modal-state" id="modal-1" type="checkbox" data-bind="checked: show" />
+<div class="modal-window">
+    <div class="modal-inner">
+        <label class="modal-close" for="modal-1"></label>
+        <h1>Take a Photo</h1>
+        <video id="camFeed" width="320" height="240" autoplay></video>
+        <form data-bind="submit: save">
+            <label>Name</label><input type="text" name="name" data-bind="value: name" />
+            <input type="submit" value="Save" />
+        </form>
+        <canvas id="photo" width="320" height="240"></canvas>
+    </div>
+</div>
