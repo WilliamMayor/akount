@@ -717,8 +717,9 @@ body {
     .expenditures .actions:last-child {
       margin-right: 0; }
     .expenditures .actions a {
-      display: block;
-      margin: 20px 0; }
+      display: inline-block; }
+    .expenditures .actions p:nth-child(1) {
+      margin-bottom: 50px; }
   .expenditures .submit {
     position: absolute;
     top: -300px; }

@@ -45,8 +45,10 @@
         @include omega();
         text-align: right;
         a {
-            display: block;
-            margin: 20px 0;
+            display: inline-block;
+        }
+        p:nth-child(1) {
+            margin-bottom: 50px;
         }
     }
     .submit {
