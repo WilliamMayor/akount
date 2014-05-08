@@ -24,7 +24,6 @@ var global = {
 };
 global.setup();
 
-later.date.localTime();
 
 $("header a").click(function(e) {
 	var a = $(this);
